@@ -1,0 +1,21 @@
+# Dependencias
+node_modules/
+
+# Entorno
+.env
+.env.*
+
+# Logs
+*.log
+npm-debug.log*
+
+# Sistema
+.DS_Store
+Thumbs.db
+
+# VS Code
+.vscode/
+.idea/
+
+# Icono fuente (2.1 MB) - usar versiones de icons/
+icono.png

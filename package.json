@@ -1,0 +1,13 @@
+{
+  "name": "notefur",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Extensión Chrome de notas con Side Panel",
+  "type": "module",
+  "scripts": {
+    "test": "vitest run"
+  },
+  "devDependencies": {
+    "vitest": "^4.1.11"
+  }
+}

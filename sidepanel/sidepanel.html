@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" href="styles.css" />
+  <title>NoteFur</title>
+</head>
+<body>
+  <header class="app-header">
+    <h1 class="app-title">NoteFur</h1>
+    <button id="btn-new" class="btn btn-primary" type="button">+ Nueva nota</button>
+  </header>
+
+  <main id="notes-list" class="notes-list" aria-label="Lista de notas"></main>
+
+  <section id="editor" class="editor hidden" aria-label="Editor de nota">
+    <div class="editor-head">
+      <button id="btn-back" class="btn btn-ghost" type="button">&larr; Volver</button>
+      <span id="save-status" class="save-status" aria-live="polite"></span>
+      <button id="btn-delete" class="btn btn-danger" type="button">Eliminar</button>
+    </div>
+    <input id="note-title" class="editor-title" type="text" placeholder="Título" maxlength="200" />
+    <textarea id="note-body" class="editor-body" placeholder="Escribe tu nota aquí&hellip;"></textarea>
+  </section>
+
+  <div id="toast" class="toast hidden" role="alert"></div>
+
+  <script type="module" src="sidepanel.js"></script>
+</body>
+</html>
