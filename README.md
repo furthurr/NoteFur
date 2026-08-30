@@ -56,6 +56,13 @@ NoteFur/
 
 Capas separadas con inyección de dependencias: la UI nunca toca `chrome.storage` directamente — todo pasa por el adaptador `src/storage/notesStorage.js`, lo que permite testear con fakes.
 
+## Autor
+
+Pedro G. V. [@furthurr](https://github.com/furthurr)
+
+- GitHub: https://github.com/furthurr
+- Email: pedrogvas@gmail.com
+
 ## Licencia
 
-Sin licencia definida. Contacta con el autor antes de reutilizar.
+Apache-2.0
