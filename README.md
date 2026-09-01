@@ -2,6 +2,8 @@
 
 Extensión de Chrome para gestionar notas desde el **panel lateral** (Side Panel API). Escribe, edita y elimina notas con guardado automático, todo en Manifest V3.
 
+![NoteFur — panel lateral con notas y botones de exportar/importar](ejemplo.png)
+
 ## Características
 
 - **Panel lateral**: toda la UI vive en el Side Panel de Chrome, se abre con un clic en el ícono.

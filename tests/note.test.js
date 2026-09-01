@@ -4,6 +4,9 @@ import {
   validateNote,
   deriveDisplayTitle,
   ValidationError,
+  parseBackup,
+  serializeBackup,
+  isValidImportedNote,
 } from "../src/domain/note.js";
 
 const makeNote = (title, body) => ({
@@ -62,5 +65,97 @@ describe("createNote", () => {
     expect(note.body).toBe("Cuerpo");
     expect(note.id).toBeTruthy();
     expect(note.createdAt).toBe(note.updatedAt);
+  });
+});
+
+describe("isValidImportedNote", () => {
+  it("acepta una nota con la forma mínima correcta", () => {
+    expect(
+      isValidImportedNote({
+        id: "x",
+        title: "t",
+        body: "b",
+        createdAt: 1,
+        updatedAt: 2,
+      }),
+    ).toBe(true);
+  });
+
+  it("acepta notas con order opcional", () => {
+    expect(
+      isValidImportedNote({
+        id: "x",
+        title: "t",
+        body: "b",
+        createdAt: 1,
+        updatedAt: 2,
+        order: 5,
+      }),
+    ).toBe(true);
+  });
+
+  it("rechaza notas con tipos incorrectos o campos faltantes", () => {
+    const invalid = [
+      null,
+      {},
+      { id: 1, title: "t", body: "b", createdAt: 1, updatedAt: 1 },
+      { id: "x", title: 1, body: "b", createdAt: 1, updatedAt: 1 },
+      { id: "x", title: "t", body: "b", createdAt: "1", updatedAt: 1 },
+      { id: "", title: "t", body: "b", createdAt: 1, updatedAt: 1 },
+    ];
+    for (const raw of invalid) expect(isValidImportedNote(raw)).toBe(false);
+  });
+});
+
+describe("parseBackup", () => {
+  const sample = {
+    version: 1,
+    exportedAt: "2026-08-31T00:00:00.000Z",
+    notes: [
+      { id: "a", title: "A", body: "", createdAt: 1, updatedAt: 1 },
+      { id: "b", title: "B", body: "x", createdAt: 2, updatedAt: 2 },
+    ],
+  };
+
+  it("parsea un backup válido y devuelve sus notas", () => {
+    const parsed = parseBackup(JSON.stringify(sample));
+    expect(parsed.version).toBe(1);
+    expect(parsed.exportedAt).toBe("2026-08-31T00:00:00.000Z");
+    expect(parsed.notes).toHaveLength(2);
+    expect(parsed.notes[0].id).toBe("a");
+  });
+
+  it("descarta silenciosamente notas inválidas manteniendo las válidas", () => {
+    const dirty = {
+      version: 1,
+      notes: [
+        { id: "ok", title: "t", body: "", createdAt: 1, updatedAt: 1 },
+        { id: 2, title: "t", body: "b", createdAt: 1, updatedAt: 1 }, // id no es string
+        null,
+      ],
+    };
+    const parsed = parseBackup(JSON.stringify(dirty));
+    expect(parsed.notes).toHaveLength(1);
+    expect(parsed.notes[0].id).toBe("ok");
+  });
+
+  it("lanza ValidationError ante JSON inválido", () => {
+    expect(() => parseBackup("no es json")).toThrow(ValidationError);
+  });
+
+  it("lanza ValidationError si falta el array notes", () => {
+    expect(() => parseBackup(JSON.stringify({ version: 1 }))).toThrow(ValidationError);
+    expect(() => parseBackup(JSON.stringify([1, 2, 3]))).toThrow(ValidationError);
+  });
+});
+
+describe("serializeBackup", () => {
+  it("genera un JSON con version, exportedAt y las notas indicadas", () => {
+    const notes = [makeNote("a", "x")];
+    const json = serializeBackup(notes);
+    const parsed = JSON.parse(json);
+    expect(parsed.version).toBe(1);
+    expect(typeof parsed.exportedAt).toBe("string");
+    expect(parsed.notes).toEqual(notes);
   });
 });
