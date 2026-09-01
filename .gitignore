@@ -19,3 +19,6 @@ Thumbs.db
 
 # Icono fuente (2.1 MB) - usar versiones de icons/
 icono.png
+
+# Artefacto de macOS (archivo vacío "Icon" que algunos Finder crean)
+Icon
